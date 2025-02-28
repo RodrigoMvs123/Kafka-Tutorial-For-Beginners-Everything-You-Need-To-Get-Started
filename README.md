@@ -194,13 +194,96 @@ adminClient.createTopics(topics)
                              Send confirmation email to customer
                              Send notification to department head
 
-                            Inventory
-                            Update inventory database
+                             Inventory
+                             Update inventory database
                                                     Generate event and add to inventory topic  
 
-                            Payment
-                            Generate invoice and send to user   
+                             Payment
+                             Generate invoice and send to user   
 ```
 
 ##### Real-Time Processing with Stream API
+
+> Analytics 
+
+When sells happen in the appplocation, you may have a sell dashboard where the servers are updating real time sells numbers
+
+- Real-Time Metrics
+
+- Personalized Recommendations 
+
+- Website Activity Tracking 
+
+- Fraud Detection
+
+Kafka Streams API 
+
+> The Streaming API allows you to **create real-time apps** by **continously** transforming and analysing income data streams
+
+```
+Kafka Producer
+                Topic           Kafka Consumer ( Will process one event at a time  )
+                                    - Notification Service ( Will read a order event ) / Will send an email or notification to the customer
+```
+
+Stream
+
+```
+Stream
+        Key and Value -> Key and Value -> Key and Value...
+```
+
+> Think of a stream as an **continous real-time flow of records ( key-value pairs )
+
+> You do not need to explicitly request new records, you just receive them
+
+> Provides higher-level functions to process event streams, like **transformation and statefull operations** like aggregations ( counts, averages, sums ) and joins
+
+**Kafka Streams API** is a library you embed in your app to perform stream processing
+
+```Javascript
+const builder = new StreamsBuilder();
+
+// Read from our existing orders topic
+const orders = builder.stream('new-orders');
+
+// Calculate real-time revenue by category
+const revenueByCategory = orders
+    .groupBy((key, order) => order.category)
+    .windowedBy(TimeWindows.of(Duration.ofMinutes(5)))
+    .aggregate(
+        ( => 0,
+        (key, order, total) => total + order.amount
+        )
+    );
+
+// Detect trending products
+const trendingProducts = orders
+    .groupBy((key, order) => order.productId)
+    .windowedBy(TimeWindows.of(Duration.ofHours(5)))
+    .count()
+    .filter((key, count) => count > 100);
+
+// Output to different topics for dashboards
+revenueByCategory.to('revenue-metrics');
+trendingProducts.to(trending-products);
+```
+
+#### Partitions for Scalability and Performance 
+
+> This are streams of constant data saved as events in Kafka 
+
+Partitions 
+
+- A lot of data processed, easy to handdle and process without compromise the performance
+
+> **Scalability**: Distribute data across multiple Kafka brokers
+
+> **Paralellism**: Allows Concurrent message processing
+
+> **Ordering**: Guarantees order within a Partition
+
+> **Fault Tolerance**: Replication and leader failover
+
+> **Logical Grouping**: Groups related data for efficint processing.
 
