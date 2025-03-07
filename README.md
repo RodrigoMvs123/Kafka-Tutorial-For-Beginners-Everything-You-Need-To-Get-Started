@@ -287,3 +287,50 @@ Partitions
 
 > **Logical Grouping**: Groups related data for efficint processing.
 
+To add sections and **Partions** will add more "workers" per sections to help out in designed sections. 
+
+Partitions 
+```
+
+                   EU
+                   US
+                   Asia
+
+                   Orders
+```
+
+Consumer Groups for Scalable Message Consumption
+
+> Additional instances of microservices, like replicas in K8s, they can all consume from Kafka partitions and process events faster in parallel 
+
+```
+    Consumer Group 1
+    Consumer Group 2
+    Consumer Group 3
+```
+
+Who does Kafka know which consumers form a group, and how to be bid, and each one belongs together ?
+
+Grouped by the group ID Attribute 
+```Javascript
+const inventoryConsumer = new KafkaConsumer({
+    groupId: 'inventory-team',
+});
+```
+
+When start the replicas
+
+> Kafka **distributes load automatically 
+
+Partitions 
+```
+
+                   EU             Consumer 1
+                   US             Consumer 2 ( Replica )
+                   Asia'          Consumer 3 ( Replica )
+
+                   Orders
+```
+
+Kafka Brokers
+
