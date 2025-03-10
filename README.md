@@ -327,10 +327,69 @@ Partitions
 
                    EU             Consumer 1
                    US             Consumer 2 ( Replica )
-                   Asia'          Consumer 3 ( Replica )
+                   Asia           Consumer 3 ( Replica )
 
                    Orders
 ```
 
-Kafka Brokers
+#### Kafka Brokers
 
+What is a Kafka Broker
+
+> Server that **store data** ( Message ) in topics, **manages message** distribution to consumers
+
+```
+Kafka Broker 1
+  Topic A
+Partition 0
+
+Kafka Broker 2
+  Topic A   
+Partition 1
+
+Kafka Broker 3
+  Topic A
+Partition 2
+
+Kafka Cluster
+```
+
+> Topic's partitions are **distributed across multiple brokers**
+
+> Each partition has a **leader broker** and multiple replicas
+
+> Stores messages on disk for a configurable **retention period** ( Log )
+
+> This enable **real time data processing** 
+
+> Consumers can **read multiple times** and **whenever they want**
+
+```
+Kafka Broker 1
+  Topic A
+Partition 0
+
+Kafka Broker 2 
+  Topic A          Topic A      Topic A
+Partition 1      Partition 0   Partition 1
+
+Kafka Broker 3
+  Topic A
+Partition 2
+
+Kafka Cluster
+```
+
+#### Zookeeper and KRaft
+
+> Zookeeper is a centralized service for managing metadata and **coordination tasks for distributed systems**
+
+> External dependency of Kafka
+
+Cluster Management 
+
+> Maintaining **registry** off all active brokers in the cluster
+
+Leader Election
+
+> Zookeeper facilitates the election of the leader 
